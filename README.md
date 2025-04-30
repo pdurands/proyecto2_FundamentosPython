@@ -1,130 +1,82 @@
-# 🔐 Proyecto Final: Sistema de Autenticación con CSV Seguro
-## 📘 Contexto/Introducción
-Construir un sistema de registro e inicio de sesión es fundamental para cualquier sistema que requiera autenticación. Este proyecto simula un sistema realista de login que almacena los datos de los usuarios en un archivo .csv, pero va más allá: incluye validación, modularización y buenas prácticas de seguridad como el uso de hash para las contraseñas, sin frameworks ni bases de datos externas.
 
-Este es un mini-backend funcional que podría utilizarse para aplicaciones locales, prototipos o herramientas internas.
+# Sistema de Autenticación 🛡️
 
-## ✅ Requerimientos Funcionales
-### 📁 Base de datos de usuarios (users.csv)
-Debe almacenar los siguientes campos:
+Este proyecto es un sistema de autenticación básico desarrollado en Python que utiliza un archivo CSV como base de datos para almacenar la información de los usuarios. Implementa el uso de **hashes** para proteger las contraseñas y garantizar la seguridad de los datos. Permite registrar usuarios, iniciar sesión, cambiar contraseñas y ver información del usuario.
 
-email, password_hash, registered_at
+## Características
 
-Si el archivo no existe, debe crearse automáticamente al iniciar el programa.
+- **Registro de usuarios**: Permite registrar nuevos usuarios con un correo electrónico, contraseña y fecha de registro.
+- **Inicio de sesión**: Verifica las credenciales del usuario utilizando contraseñas en formato hash.
+- **Cambio de contraseña**: Los usuarios pueden actualizar su contraseña, que se almacena de forma segura.
+- **Visualización de información**: Los usuarios pueden consultar su información almacenada en la base de datos.
+- **Base de datos en CSV**: La información de los usuarios se almacena en un archivo `users.csv`.
+- **Seguridad**: Las contraseñas se almacenan como hashes, lo que evita que sean visibles en texto plano.
+- **Validación de entradas**: Se asegura que los correos electrónicos y contraseñas cumplan con los requisitos mínimos de seguridad.
 
-## 👤 Registro de usuario
-Solicita email, contraseña, y confirmación de contraseña.
+## Requisitos
 
-Validar:
+Para ejecutar este proyecto, asegúrate de tener instaladas las siguientes dependencias. Puedes instalarlas utilizando el archivo `requirements.txt`:
 
-Que el email tenga un formato válido (regex simple).
-
-Que el email no esté ya registrado.
-
-Que las contraseñas coincidan.
-
-Almacenar contraseña como hash (usa hashlib.sha256()).
-
-Guardar la fecha de registro usando datetime.datetime.now().
-
-## 🔑 Inicio de sesión
-Solicita email y contraseña.
-
-Validar si el email existe y la contraseña coincide (comparando hash).
-
-Si es correcto, marcar al usuario como "logueado" en memoria (no guardar estado en el CSV).
-
-En sesión activa, permitir cerrar sesión o salir.
-
-## 🔁 Loop de ejecución
-El sistema corre hasta que el usuario decida salir.
-
-Si el usuario está logueado, debe poder:
-
-Ver su información (email y fecha de registro).
-
-Cerrar sesión.
-
-Si no está logueado, debe poder:
-
-Registrarse
-Iniciar sesión
-Salir
-
-Ejemplo de menú:
-
-```
-📌 Menú principal
-1. Registrarse
-2. Iniciar sesión
-3. Salir
-```
-Cuando está logueado:
-
-```
-👋 Bienvenido, usuario@mail.com
-1. Ver mi información
-2. Cerrar sesión
-3. Salir
+```bash
+pip install -r requirements.txt
 ```
 
-## 🎯 Desafío Opcional (Nivel 2% Más)
-Agrega la funcionalidad de bloqueo de cuenta tras 3 intentos fallidos de login consecutivos:
+### Dependencias
 
-- Lleva un registro en memoria (no en el archivo).
+- `evdev==1.9.1`
+- `maskpass==0.3.7`
+- `pynput==1.8.1`
+- `python-xlib==0.33`
+- `six==1.17.0`
 
-- Muestra un mensaje de “Usuario bloqueado, reinicia la aplicación para intentar de nuevo.”
+## Uso
 
-También puedes agregar una función de cambio de contraseña desde el menú logueado:
+1. **Clonar el repositorio**:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd <NOMBRE_DEL_PROYECTO>
+   ```
 
-- Solicitar la contraseña actual.
-- Validar que sea correcta.
-- Solicitar nueva contraseña y confirmación.
-- Actualizar la línea correspondiente en el CSV.
+2. **Instalar dependencias**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
+3. **Ejecutar el programa**:
+   ```bash
+   python main.py
+   ```
 
-## 🧠 Buenas prácticas y sugerencias técnicas
-Usa typing para todas tus funciones.
+4. **Opciones del menú principal**:
+   - `1. Registrarse`: Registra un nuevo usuario.
+   - `2. Iniciar sesión`: Inicia sesión con un usuario existente.
+   - `3. Salir`: Cierra el programa.
 
-Usa csv.DictReader y csv.DictWriter para trabajar con el archivo.
+5. **Opciones del menú de usuario**:
+   - `1. Ver mi información`: Muestra la información del usuario.
+   - `2. Cerrar sesión`: Regresa al menú principal.
+   - `3. Cambiar contraseña`: Permite actualizar la contraseña del usuario.
+   - `4. Salir`: Finaliza el programa.
 
-Usa hashlib.sha256() para encriptar contraseñas (sin sal para mantenerlo dentro del alcance).
+## Base de Datos
 
-Usa re.fullmatch(r"[^@]+@[^@]+\.[^@]+", email) para validar emails.
+El archivo `users.csv` se utiliza como base de datos para almacenar la información de los usuarios. Este archivo contiene las siguientes columnas:
 
-Crea funciones puras y separadas:
+- `email`: Correo electrónico del usuario.
+- `password_hash`: Contraseña en formato hash.
+- `registered_at`: Fecha y hora de registro.
 
-- register_user(), login_user(), load_users(), save_user(), hash_password(), is_valid_email(), etc.
+## Seguridad
 
-Usa try/except para capturar errores de entrada y de archivos.
+- **Hashing de contraseñas**: Las contraseñas se almacenan como hashes utilizando algoritmos seguros, lo que protege los datos en caso de acceso no autorizado al archivo CSV.
+- **Validación de entradas**: Se implementan validaciones estrictas para garantizar que los datos ingresados sean seguros y válidos.
 
-Modulariza tu menú y tu lógica en una función principal main().
+## Notas
 
-## 🧾 Ejemplo de Entrada/Salida
+- Asegúrate de que el archivo `users.csv` tenga los permisos necesarios para lectura y escritura.
+- El programa maneja errores comunes como usuarios duplicados o credenciales incorrectas.
+- Las contraseñas no se almacenan en texto plano, lo que mejora la seguridad del sistema.
 
-```
-Bienvenido al sistema 🛡️
+## Autor
 
-1. Registrarse
-2. Iniciar sesión
-3. Salir
-> 2
-
-Email: mario@mail.com
-Contraseña: ********
-❌ Usuario o contraseña incorrecta.
-
-> 2
-Email: mario@mail.com
-Contraseña: ********
-✔ Bienvenido, mario@mail.com
-
-👤 Opciones
-1. Ver mi información
-2. Cerrar sesión
-3. Salir
-> 1
-
-Email: mario@mail.com
-Registrado el: 2025-04-15 00:33:52
-```
+Desarrollado por Paul B. Durand Sarango.
