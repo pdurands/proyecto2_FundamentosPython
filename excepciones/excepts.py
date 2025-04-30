@@ -1,0 +1,4 @@
+
+class SalirdelPrograma(Exception):
+    pass
+
